@@ -5,9 +5,8 @@ const path = require('path');
 router.get('/cards', (req, res) => {
   const filePath = path.normalize('./data/cards.json');
 
-  fs.readFile(filePath, { encoding : 'utf-8'}, (err, data) => {
+  fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
     if (err) {
-      console.log(err);
       return;
     }
 
