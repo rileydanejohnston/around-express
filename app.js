@@ -9,12 +9,8 @@ app.use('/', userRouter);
 app.use('/', cardRouter);
 
 
-app.get('/', (req, res) => {
-  res.status(404).send('Error');
-});
-
-app.get('/cards', (req, res) => {
-  res.status(404).send('Here is the cards section');
+app.get('*', (req, res) => {
+  res.status(404).send({ "message": "Requested resource not found" });
 });
 
 app.listen(PORT, () => {
