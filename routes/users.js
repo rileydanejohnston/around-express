@@ -3,35 +3,43 @@ const fs = require('fs');
 const path = require('path');
 
 router.get('/users', (req, res) => {
-  const filePath = path.normalize('./data/users.json'); // ??  path from app.js  ??
+  try {
+    const filePath = path.normalize('./data/users.json'); // ??  path from app.js  ??
 
-  fs.readFile(filePath, { encoding: 'utf8' }, (err, data) => {
-    if (err) {
-      return;
-    }
-    res.send(data);
-  });
+    fs.readFile(filePath, { encoding: 'utf8' }, (err, data) => {
+      if (err) {
+        return;
+      }
+      res.send(data);
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 router.get('/users/:id', (req, res) => {
-  const filePath = path.normalize('./data/users.json');
-  const { id } = req.params;
+  try {
+    const filePath = path.normalize('./data/users.json');
+    const { id } = req.params;
 
-  fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
-    if (err) {
-      return;
-    }
-    const newData = JSON.parse(data);
+    fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
+      if (err) {
+        return;
+      }
+      const newData = JSON.parse(data);
 
-    const userMatch = newData.find(user => id === user._id);
+      const userMatch = newData.find((user) => id === user._id);
 
-    if (userMatch === undefined || userMatch.length === 0) {
-      res.status(404).send({ message: 'User ID not found' });
-      return;
-    }
+      if (userMatch === undefined || userMatch.length === 0) {
+        res.status(404).send({ message: 'User ID not found' });
+        return;
+      }
 
-    res.send(userMatch);
-  });
+      res.send(userMatch);
+    });
+  } catch (err) {
+    res.status(500).send(404);
+  }
 });
 
 module.exports = router;
