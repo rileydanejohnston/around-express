@@ -23,11 +23,7 @@ router.get('/users/:id', (req, res) => {
     }
     const newData = JSON.parse(data);
 
-    const userMatch = newData.filter((user) => {
-      if (id === user._id) {
-        return user;
-      }
-    });
+    const userMatch = newData.find(user => id === user._id);
 
     if (userMatch === undefined || userMatch.length === 0) {
       res.send({ message: 'User ID not found' });
