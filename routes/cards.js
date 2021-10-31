@@ -8,6 +8,7 @@ router.get('/cards', (req, res) => {
 
     fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
       if (err) {
+        res.status(500).send(err);
         return;
       }
 

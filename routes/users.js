@@ -8,6 +8,7 @@ router.get('/users', (req, res) => {
 
     fs.readFile(filePath, { encoding: 'utf8' }, (err, data) => {
       if (err) {
+        res.status(500).send(err);
         return;
       }
       res.send(data);
@@ -24,6 +25,7 @@ router.get('/users/:id', (req, res) => {
 
     fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
       if (err) {
+        res.status(500).send(err);
         return;
       }
       const newData = JSON.parse(data);
