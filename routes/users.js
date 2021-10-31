@@ -8,13 +8,13 @@ router.get('/users', (req, res) => {
 
     fs.readFile(filePath, { encoding: 'utf8' }, (err, data) => {
       if (err) {
-        res.status(500).send(err);
+        res.status(500).send({ message: 'An error has occurred on the server' });
         return;
       }
       res.send(data);
     });
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).send({ message: 'An error has occurred on the server' });
   }
 });
 
@@ -25,7 +25,7 @@ router.get('/users/:id', (req, res) => {
 
     fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
       if (err) {
-        res.status(500).send(err);
+        res.status(500).send({ message: 'An error has occurred on the server' });
         return;
       }
       const newData = JSON.parse(data);
@@ -40,7 +40,7 @@ router.get('/users/:id', (req, res) => {
       res.send(userMatch);
     });
   } catch (err) {
-    res.status(500).send(404);
+    res.status(500).send({ message: 'An error has occurred on the server' });
   }
 });
 
