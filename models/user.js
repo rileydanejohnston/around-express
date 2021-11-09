@@ -19,8 +19,10 @@ const userSchema = mongoose.Schema({
       validator: (v) => {
         return /\w{4,5}\S{3,}/.test(v)
       },
-      message: props => `${props.value} is not a valid phone number!`
+      message: 'Error! The link you entered is invalid.'
     },
     required: true
   }
 });
+
+module.exports = mongoose.model('user', userSchema);
