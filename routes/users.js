@@ -1,4 +1,11 @@
 const router = require('express').Router();
+const { createUser } = require('../controllers/users');
+
+// router.get('/users', getUsers);
+// router.get('/users/:userId', get);
+router.post('/users', createUser);
+
+/*
 const fs = require('fs');
 const path = require('path');
 
@@ -43,5 +50,5 @@ router.get('/users/:id', (req, res) => {
     res.status(500).send({ message: 'An error has occurred on the server' });
   }
 });
-
+*/
 module.exports = router;
