@@ -3,10 +3,16 @@ const Cards = require('../models/card');
 module.exports.getCards = (req, res) => {
   // find all cards, return them
   Cards.find({})
+  .orFail()
   // if successful, return cards
   .then(cards => res.status(200).send({ data: cards }))
   // if unsuccessful, return an error
-  .catch(err => res.status(500).send({ message: err }));
+  .catch(err => {
+    if (err.name === 'DocumentNotFoundError'){
+      res.status(404).send({ message: 'Could not find any cards.' });
+    }
+    res.status(500).send({ message: err });
+  });
 }
 
 module.exports.createCard = (req, res) => {
@@ -22,7 +28,12 @@ module.exports.createCard = (req, res) => {
   // if we find the cards, send them back with 200 response
   .then(card => res.status(200).send({ data: card }))
   // if we fail to get the cards, send an error msg with 500 response
-  .catch(err => res.status(500).send({ message: err }));
+  .catch(err => {
+    if (err.name === 'ValidationError'){
+      res.status(400).send({ message: 'Invalid information was submitted.' })
+    }
+    res.status(500).send({ message: err })
+  });
 }
 
 module.exports.deleteCard = (req, res) => {
@@ -31,5 +42,10 @@ module.exports.deleteCard = (req, res) => {
   // if successful, return the card that was deleted?
   .then(card => res.status(200).send({ data: card }))
   // if unsuccessful, return error
-  .catch(err => res.status(500).send({ message: err }));
+  .catch(err => {
+    if (err.name === 'CastError'){
+      res.status(404).send({ message: 'Invalid user ID.' });
+    }
+    res.status(500).send({ message: err });
+  });
 }
