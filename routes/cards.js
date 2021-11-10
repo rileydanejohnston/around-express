@@ -1,4 +1,9 @@
 const router = require('express').Router();
+const { createCard } = require('../controllers/cards');
+
+router.post('/cards', createCard);
+
+/*
 const fs = require('fs');
 const path = require('path');
 
@@ -18,5 +23,7 @@ router.get('/cards', (req, res) => {
     res.status(500).send({ message: 'An error has occurred on the server' });
   }
 });
+
+*/
 
 module.exports = router;
