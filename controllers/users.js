@@ -5,8 +5,14 @@ const Users = require('../models/user');
 module.exports.getUsers = (req, res) => {
   // grab all users from the Users model
   Users.find({})
+  .orFail()
   .then(users => res.status(200).send({ data: users }))
-  .catch(err => res.status(500).send({ message: 'There was a server error.'}));
+  .catch(err => {
+    if (err.name === 'DocumentNotFoundError'){
+      res.status(404).send({ message: 'Could not find any users.' });
+    }
+    res.status(500).send({ message: err });
+  });
 }
 
 // get specific user by their id
@@ -18,7 +24,12 @@ module.exports.getUser = (req, res) => {
   // if we find the user, send user info back with 200 status code
   .then(user => res.status(200).send({ data: user }))
   // if we can't find the user, send an error message with a 404 status code
-  .catch(err => res.status(404).send({ message: 'A user with that ID was not found.' }))
+  .catch(err => {
+    if (err.name === 'CastError'){
+      res.status(404).send({ message: 'Invalid user ID.' });
+    }
+    res.status(500).send({ message: err });
+  });
 }
 
 // controller function - create new user in database from post request
@@ -31,5 +42,10 @@ module.exports.createUser = (req, res) => {
   // if successful, we get send the user back with 200 status
   .then(user => res.status(200).send({ data: user }))
   // if failure, we send error message back with 500 status
-  .catch(err => res.status(500).send({ message: 'There was a server error.'}));
+  .catch(err => {
+    if (err.name === 'ValidationError'){
+      res.status(400).send({ message: 'Invalid information was submitted.' })
+    }
+    res.status(500).send({ message: err })
+  });
 }
