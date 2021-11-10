@@ -26,7 +26,7 @@ module.exports.createCard = (req, res) => {
   // find all cards in the cards model
   Cards.create({ name, link, owner: _id })
   // if we find the cards, send them back with 200 response
-  .then(card => res.status(200).send({ data: card }))
+  .then(card => res.status(201).send({ data: card }))
   // if we fail to get the cards, send an error msg with 500 response
   .catch(err => {
     if (err.name === 'ValidationError'){

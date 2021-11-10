@@ -40,7 +40,7 @@ module.exports.createUser = (req, res) => {
   // create a new document in db -> pass name, about, avatar
   Users.create({ name, about, avatar })
   // if successful, we get send the user back with 200 status
-  .then(user => res.status(200).send({ data: user }))
+  .then(user => res.status(201).send({ data: user }))
   // if failure, we send error message back with 500 status
   .catch(err => {
     if (err.name === 'ValidationError'){
