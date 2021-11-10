@@ -24,3 +24,12 @@ module.exports.createCard = (req, res) => {
   // if we fail to get the cards, send an error msg with 500 response
   .catch(err => res.status(500).send({ message: err }));
 }
+
+module.exports.deleteCard = (req, res) => {
+  // get id from request -> pass to delete method
+  Cards.findByIdAndRemove(req.params.id)
+  // if successful, return the card that was deleted?
+  .then(card => res.status(200).send({ data: card }))
+  // if unsuccessful, return error
+  .catch(err => res.status(500).send({ message: err }));
+}
