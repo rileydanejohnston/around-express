@@ -1,5 +1,14 @@
 const Cards = require('../models/card');
 
+module.exports.getCards = (req, res) => {
+  // find all cards, return them
+  Cards.find({})
+  // if successful, return cards
+  .then(cards => res.status(200).send({ data: cards }))
+  // if unsuccessful, return an error
+  .catch(err => res.status(500).send({ message: err }));
+}
+
 module.exports.createCard = (req, res) => {
   // get card information from request
   const { name, link } = req.body;
