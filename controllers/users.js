@@ -1,17 +1,13 @@
-// pull in the users model
 const Users = require('../models/user');
 
-// update avatar
 module.exports.updateAvatar = (req, res) => {
-  // get link from req body
   const { avatar } = req.body;
   const { _id } = req.user;
-  // call method on Users - use ID from req.user.id
+
   Users.findByIdAndUpdate(_id, { avatar }, {
     new: true, // then handler receives updated document
     runValidators: true // validate data before update
   })
-  // if successful, return updated user
   .then(user => res.status(200).send({ data: user }))
   .catch(err => {
     if (err.name === 'ValidatorError')
@@ -22,19 +18,14 @@ module.exports.updateAvatar = (req, res) => {
   });
 }
 
-// update profile information
 module.exports.updateProfile = (req, res) => {
-  // get information request body
   const { name, about } = req.body;
-  // find the user by id/update info
-    // pass id, object of info to update
+
   Users.findByIdAndUpdate(req.user._id, { name, about }, {
     new: true, // then handler receives updated document
     runValidators: true // validate data before update
   })
-  // if successful, send the user back... updated user?
   .then(user => res.status(200).send({ data: user }))
-  // if unsuccessful, send error
   .catch(err => {
     if (err.name === 'ValidationError'){
       res.status(400).send({ message: 'Invalid information was submitted.' })
@@ -43,9 +34,7 @@ module.exports.updateProfile = (req, res) => {
   });
 }
 
-// get all users
 module.exports.getUsers = (req, res) => {
-  // grab all users from the Users model
   Users.find({})
   .orFail()
   .then(users => res.status(200).send({ data: users }))
@@ -57,15 +46,11 @@ module.exports.getUsers = (req, res) => {
   });
 }
 
-// get specific user by their id
 module.exports.getUser = (req, res) => {
-  // get the id from the req params
   const { userId } = req.params;
-  // search through the Users model for a user with the matching id
+
   Users.findById(userId)
-  // if we find the user, send user info back with 200 status code
   .then(user => res.status(200).send({ data: user }))
-  // if we can't find the user, send an error message with a 404 status code
   .catch(err => {
     if (err.name === 'CastError'){
       res.status(404).send({ message: 'Invalid user ID.' });
@@ -74,16 +59,11 @@ module.exports.getUser = (req, res) => {
   });
 }
 
-// controller function - create new user in database from post request
 module.exports.createUser = (req, res) => {
-  // get user info from request body
   const { name, about, avatar } = req.body;
 
-  // create a new document in db -> pass name, about, avatar
   Users.create({ name, about, avatar })
-  // if successful, we get send the user back with 200 status
   .then(user => res.status(201).send({ data: user }))
-  // if failure, we send error message back with 500 status
   .catch(err => {
     if (err.name === 'ValidationError'){
       res.status(400).send({ message: 'Invalid information was submitted.' })
