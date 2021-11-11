@@ -1,5 +1,26 @@
 const Cards = require('../models/card');
 
+module.exports.dislikeCard = (req, res) =>
+  Cards.findByIdAndUpdate(req.params.cardId,
+    { $pull: { likes: req.user._id } }, // remove _id from the array
+    { new: true },
+  )
+  .then(likes => res.status(200).send({ data: likes }))
+  .catch(err => {
+    res.status(500).send({ message: err });
+  });
+
+module.exports.likeCard = (req, res) => {
+  Cards.findByIdAndUpdate(req.params.cardId,
+    { $addToSet: { likes: req.user._id } }, // add _id to the array if it's not there yet
+    { new: true },
+  )
+  .then(likes => res.status(200).send({ data: likes }))
+  .catch(err => {
+    res.status(500).send({ message: err });
+  });
+}
+
 module.exports.getCards = (req, res) => {
   // find all cards, return them
   Cards.find({})
