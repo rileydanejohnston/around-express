@@ -1,6 +1,27 @@
 // pull in the users model
 const Users = require('../models/user');
 
+// update avatar
+module.exports.updateAvatar = (req, res) => {
+  // get link from req body
+  const { avatar } = req.body;
+  const { _id } = req.user;
+  // call method on Users - use ID from req.user.id
+  Users.findByIdAndUpdate(_id, { avatar }, {
+    new: true, // then handler receives updated document
+    runValidators: true // validate data before update
+  })
+  // if successful, return updated user
+  .then(user => res.status(200).send({ data: user }))
+  .catch(err => {
+    if (err.name === 'ValidatorError')
+    {
+      res.status(400).send({ message: 'Invalid information was submitted.' })
+    }
+    res.status(500).send({ message: err })
+  });
+}
+
 // update profile information
 module.exports.updateProfile = (req, res) => {
   // get information request body
