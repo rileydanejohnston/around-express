@@ -1,6 +1,27 @@
 // pull in the users model
 const Users = require('../models/user');
 
+// update profile information
+module.exports.updateProfile = (req, res) => {
+  // get information request body
+  const { name, about } = req.body;
+  // find the user by id/update info
+    // pass id, object of info to update
+  Users.findByIdAndUpdate(req.user._id, { name, about }, {
+    new: true, // then handler receives updated document
+    runValidators: true // validate data before update
+  })
+  // if successful, send the user back... updated user?
+  .then(user => res.status(200).send({ data: user }))
+  // if unsuccessful, send error
+  .catch(err => {
+    if (err.name === 'ValidationError'){
+      res.status(400).send({ message: 'Invalid information was submitted.' })
+    }
+    res.status(500).send({ message: err });
+  });
+}
+
 // get all users
 module.exports.getUsers = (req, res) => {
   // grab all users from the Users model
