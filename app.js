@@ -15,7 +15,7 @@ app.use(express.json());
 // middleware to apply all cards the same owner ID
 app.use((req, res, next) => {
   req.user = {
-    _id: '618adf621d23abd54a6c3ceb'
+    _id: '618c370909a5afd80fca18fa'
   };
 
   next();
