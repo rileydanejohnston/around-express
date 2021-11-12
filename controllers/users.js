@@ -53,8 +53,13 @@ module.exports.getUser = (req, res) => {
   .orFail()
   .then(user => res.status(200).send({ data: user }))
   .catch(err => {
-    if (err.name === 'CastError' || err.name === 'DocumentNotFoundError'){
-      res.status(404).send({ message: 'Invalid user ID.' });
+    if (err.name === 'DocumentNotFoundError')
+    {
+      res.status(404).send({ message: 'The card was not found.' });
+    }
+    else if (err.name === 'CastError')
+    {
+      res.status(400).send({ message: 'Invalid card ID' });
     }
     res.status(500).send({ message: err });
   });
