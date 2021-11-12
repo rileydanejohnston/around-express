@@ -68,10 +68,15 @@ module.exports.createCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
 
   Cards.findByIdAndRemove(req.params.id)
+  .orFail()
   .then(card => res.status(200).send({ data: card }))
   .catch(err => {
     if (err.name === 'CastError'){
-      res.status(404).send({ message: 'Invalid user ID.' });
+      res.status(400).send({ message: 'Invalid user ID.' });
+    }
+    else if (err.name === 'DocumentNotFoundError')
+    {
+      res.status(404).send({ message: 'Could not find that card.' })
     }
     res.status(500).send({ message: err });
   });
