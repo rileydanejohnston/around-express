@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
-const helmet = require('helmet');
 
 const { PORT = 3000 } = process.env;
 
@@ -19,7 +19,7 @@ app.use(express.json());
 // middleware to apply all cards the same owner ID
 app.use((req, res, next) => {
   req.user = {
-    _id: '618c370909a5afd80fca18fa'
+    _id: '618c370909a5afd80fca18fa',
   };
 
   next();
