@@ -8,7 +8,6 @@ module.exports.dislikeCard = (req, res) =>
   .orFail()
   .then(likes => res.status(200).send({ data: likes }))
   .catch(err => {
-    console.log(err.name);
     if (err.name === 'DocumentNotFoundError')
     {
       res.status(404).send({ message: 'The card was not found.' });
@@ -25,8 +24,17 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } }, // add _id to the array if it's not there yet
     { new: true },
   )
+  .orFail()
   .then(likes => res.status(200).send({ data: likes }))
   .catch(err => {
+    if (err.name === 'DocumentNotFoundError')
+    {
+      res.status(404).send({ message: 'The card was not found.' });
+    }
+    else if (err.name === 'CastError')
+    {
+      res.status(400).send({ message: 'Invalid card ID' });
+    }
     res.status(500).send({ message: err });
   });
 }
