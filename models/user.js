@@ -5,24 +5,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: 2,
     maxlength: 30,
-    required: true
+    required: true,
   },
   about: {
     type: String,
     minlength: 2,
     maxlength: 30,
-    required: true
+    required: true,
   },
   avatar: {
     type: String,
     validate: {
-      validator: (v) => {
-        return /\w{4,5}\S{3,}/.test(v)
-      },
-      message: 'Error! The link you entered is invalid.'
+      validator: (v) => /\w{4,5}\S{3,}/.test(v),
+      message: 'Error! The link you entered is invalid.',
     },
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('user', userSchema);

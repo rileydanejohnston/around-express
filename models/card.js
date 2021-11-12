@@ -6,31 +6,29 @@ const cardSchema = new mongoose.Schema({
     type: String,
     minlength: 2,
     maxlength: 30,
-    required: true
+    required: true,
   },
   link: {
     type: String,
     validate: {
-      validator: (v) => {
-        return /\w{4,5}\S{3,}/.test(v)
-      },
-      message: 'Error! The link you entered is invalid.'
+      validator: (v) => /\w{4,5}\S{3,}/.test(v),
+      message: 'Error! The link you entered is invalid.',
     },
-    required: true
+    required: true,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: userModel,
-    required: true
+    required: true,
   },
   likes: {
     type: Array,
-    default: []
+    default: [],
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model('card', cardSchema);
