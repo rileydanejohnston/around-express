@@ -50,9 +50,10 @@ module.exports.getUser = (req, res) => {
   const { userId } = req.params;
 
   Users.findById(userId)
+  .orFail()
   .then(user => res.status(200).send({ data: user }))
   .catch(err => {
-    if (err.name === 'CastError'){
+    if (err.name === 'CastError' || err.name === 'DocumentNotFoundError'){
       res.status(404).send({ message: 'Invalid user ID.' });
     }
     res.status(500).send({ message: err });
